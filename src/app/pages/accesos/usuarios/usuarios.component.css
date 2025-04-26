@@ -1,0 +1,32 @@
+/* Agrega estos estilos en tu archivo CSS global o en el componente */
+.p-datatable-responsive-demo .p-datatable-tbody > tr > td {
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
+.p-datatable-responsive-demo .p-datatable-thead > tr > th {
+  display: none;
+}
+
+.p-datatable-responsive-demo .p-datatable-tbody > tr > td::before {
+  content: attr(data-label);
+  float: left;
+  font-weight: bold;
+}
+
+@media screen and (min-width: 768px) {
+  .p-datatable-responsive-demo .p-datatable-tbody > tr > td {
+    display: table-cell;
+    width: auto;
+    text-align: left;
+  }
+
+  .p-datatable-responsive-demo .p-datatable-thead > tr > th {
+    display: table-cell;
+  }
+
+  .p-datatable-responsive-demo .p-datatable-tbody > tr > td::before {
+    content: none;
+  }
+}

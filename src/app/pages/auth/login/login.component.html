@@ -1,0 +1,135 @@
+<p-toast></p-toast>
+<app-spinner-jump class="overlay" *ngIf="loading"></app-spinner-jump>
+
+
+
+
+
+<div
+  style="
+        background: 
+      linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), /* Oscurece la imagen */
+      url('assets/images/andeskar_portada.jpg') no-repeat center center;
+    background-size: cover;
+
+    min-height: 100vh;
+  "
+  class="px-4 py-4 md:px-6 lg:px-8"
+>
+  <div class="flex flex-wrap">
+    <div
+      class="w-full lg:w-6 p-4 lg:p-7"
+      style="background-color: rgba(255, 255, 255, 0)"
+    >
+      <div class="flex flex-column align-items-center justify-content-center">
+        <img
+          src="assets/logos/logo-little.svg"
+          alt="Andeskar Logo"
+          class="mb-1 w-18rem flex-shrink-0"
+        />
+        <div
+          style="
+            border-radius: 56px;
+            padding: 0.3rem;
+            background: linear-gradient(180deg, #2b64c000 10%, #ffa91e 30%);
+          "
+        >
+          <div
+            class="w-full surface-card py-8 px-5 sm:px-8"
+            style="border-radius: 53px"
+          >
+            <div class="text-center mb-5">
+              <i class="pi pi-user text-6xl mb-2 text-700"></i>
+              <div class="text-700 text-3xl font-bold mb-3">BIENVENIDO!!</div>
+              <span class="text-600 font-medium"
+                >Inicia Sesión para continuar</span
+              >
+            </div>
+
+            <form [formGroup]="loginForm" >
+              <div>
+                <span class="p-float-label mb-5">
+                  <input
+                    id="documento"
+                    type="text"
+                    #txtInput
+                    (keydown.enter)="cargarAgencias(txtInput.value)"
+                    autocomplete="off"
+                    formControlName="documento"
+                    placeholder="Ingresa tu documento de identidad"
+                    pInputText
+                    class="w-full"
+                  />
+                  <label htmlFor="username">Documento</label>
+                </span>
+
+                <span class="p-float-label mb-5">
+                  <p-password
+                    id="password"
+                    type="password"
+                    autocomplete="off"
+                    formControlName="contraseña"
+                    [feedback]="false"
+                    placeholder="Ingrese su contraseña"
+                    [toggleMask]="true"
+                    styleClass="w-full md:w-30rem "
+                    inputStyleClass="w-full  md:w-30rem"
+                  ></p-password>
+                  <label for="password">Contraseña</label>
+                </span>
+
+                <span class="p-float-label mb-5">
+                  <p-dropdown
+                    [options]="agencias"
+                    optionLabel="descripcion"
+                    [style]="{ width: '100%' }"
+                    [filter]="true"
+                    filterBy="descripcion"
+                    formControlName="agencia"
+                    [showClear]="true"
+                    placeholder="Selecciona una agencia"
+                    inputId="float-label"
+                  >
+                    <ng-template let-agencias pTemplate="item">
+                      <div class="flex align-items-center">
+                        <div>{{ agencias.descripcion }}</div>
+                      </div>
+                    </ng-template>
+                  </p-dropdown>
+                  <label for="float-label">Selecciona una agencia</label>
+                </span>
+
+                <div
+                  class="flex align-items-center justify-content-between mb-6 mt-4"
+                >
+                  <div class="flex align-items-center">
+                    <p-checkbox
+                      id="rememberme"
+                      [binary]="true"
+                      styleClass="mr-2"
+                    ></p-checkbox>
+                    <label for="rememberme2">Recuerdame</label>
+                  </div>
+                  <a
+                    class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer"
+                    >Olvidaste la contraseña?</a
+                  >
+                </div>
+
+                <button
+                  pButton
+                  (click)="login()"
+                  pRipple
+                  type="button"
+                  label="Iniciar Sesion"
+                  icon="pi pi-user"
+                  class="w-full p-3 text-xl bg-blue-800"
+                ></button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

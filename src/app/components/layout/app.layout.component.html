@@ -1,0 +1,10 @@
+<div class="min-h-screen flex  surface-ground">
+  <app-sidebar [usuario]="usuario"></app-sidebar>
+
+  <div class="min-h-screen flex flex-column relative flex-auto">
+    <app-topbar [usuario]="usuario"></app-topbar>
+    <div class="px-4 flex bg-white flex-column flex-auto">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

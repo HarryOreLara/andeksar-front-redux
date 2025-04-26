@@ -1,0 +1,6 @@
+export * from './auth/auth_primeng.module'
+export * from './operaciones/operaciones_primeng.module'
+export * from './personal/personal_primeng.module'
+export * from './accesos/accesos_primeng.module'
+export * from './reportes/reportes_primeng.module'
+export * from './caja/caja_primeng.module'

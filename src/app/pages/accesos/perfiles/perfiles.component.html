@@ -1,0 +1,96 @@
+<p-toast></p-toast>
+
+<div class="px-2 md:px-4 lg:px-2 lg:py-2">
+  <div class="flex justify-content-between align-items-center flex-wrap mb-3">
+    <div class="text-4xl font-bold text-500">PERFILES</div>
+    <button
+      pButton
+      type="button"
+      class="p-button-secondary ml-3 p-button-outlined w-auto"
+      pRipple
+      (click)="showNuevoPerfil()"
+      label="Nuevo Perfil"
+      icon="pi pi-plus"
+    ></button>
+  </div>
+
+  <div class="grid formgrid p-fluid mt-4">
+    <p-table
+      #dt2
+      [value]="perfiles"
+      dataKey="id"
+      [paginator]="true"
+      [rows]="40"
+      [showCurrentPageReport]="true"
+      [rowsPerPageOptions]="[40, 60, 80]"
+      class="w-full"
+      [tableStyle]="{ 'min-width': '50rem', 'font-size': '15px' }"
+      currentPageReportTemplate="Mostrando {last} Perfiles de {totalRecords}"
+      [globalFilterFields]="['descripcion']"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between">
+          <button
+            pButton
+            label="Limpiar"
+            class="p-button-outlined w-10rem"
+            icon="pi pi-filter-slash"
+            (click)="clear(dt2)"
+          ></button>
+          <span class="p-input-icon-left ml-auto w-20rem">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar..."
+            />
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nombre</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-perfil let-columns="columns">
+        <tr class="cursor-pointer hover:bg-blue-900 hover:text-white">
+          <td>{{ perfil.descripcion }}</td>
+          <td>
+            <p-tag
+              [appBooleanStatus]="perfil.estado"
+              class="text-white"
+              [styleClass]="'text-white'"
+            ></p-tag>
+          </td>
+
+          <td>
+            <button
+              pButton
+              pRippleerf
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-secondary mr-2"
+              (click)="editarPerfil(perfil)"
+            ></button>
+            <p-inputSwitch
+              name="payment"
+              class="ml-auto"
+              [(ngModel)]="perfil.estado"
+              (ngModelChange)="eliminarPerfil(perfil)"
+            ></p-inputSwitch>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+<app-nuevo-perfil
+  [isNuevoPerfil]="isNuevoPerfil"
+  [perfilId]="perfil.id"
+  (onHideEmit)="showNuevoPerfil($event)"
+>
+</app-nuevo-perfil>

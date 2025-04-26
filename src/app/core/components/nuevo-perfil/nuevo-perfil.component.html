@@ -1,0 +1,52 @@
+
+<p-dialog
+  [(visible)]="isNuevoPerfil"
+  (onShow)="onShow()"
+  (onHide)="onHide()"
+  appendTo="body"
+  [modal]="true"
+  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
+  [style]="{ width: '32vw' }"
+  header="NUEVO PERFIL"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="flex flex-column gap-2">
+      <h1 class="m-0 text-900 font-semibold text-xl line-height-3">
+        NUEVO PERFIL
+      </h1>
+      <span class="text-600 text-base">Crea todos los perfiles</span>
+    </div>
+  </ng-template>
+
+  <form
+    class="flex flex-column gap-3 mt-4"
+    [formGroup]="perfilForm"
+    (ngSubmit)="crearPerfil()"
+  >
+    <div class="grid formgrid p-fluid">
+      <div class="field mb-4 col-12 md:col-12">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              pInputText
+              id="descripcion"
+              autocomplete="off"
+              formControlName="descripcion"
+            />
+            <label class="ml-2" htmlFor="descripcion">Descripcion</label>
+          </span>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <p-button
+      icon="pi pi-check"
+      [label]="perfilId == 0 ? 'Guardar Perfil' : 'Actualizar Perfil'"
+      (click)="crearPerfil()"
+    ></p-button>
+  </ng-template>
+</p-dialog>

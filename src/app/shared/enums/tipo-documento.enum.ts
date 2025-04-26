@@ -1,0 +1,6 @@
+export enum TIPO_DOCUMENTO{
+    DNI = 52,
+    CARNET_EXTRANJERIA = 53,
+    RUC = 54,
+    PASAPORTE = 55
+}

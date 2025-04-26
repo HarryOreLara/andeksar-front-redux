@@ -1,0 +1,51 @@
+
+  .menu-row-expanded {
+    background-color: #0D3C61; /* Celeste */
+    color: white;
+  }
+  
+  /* Estilos para los SubMenus expandidos */
+  .submenu-row-expanded {
+    background-color: #237fc6; /* Azul claro */
+    color: white;
+
+  }
+  
+  /* Estilos para los SubItems expandidos */
+  .subitem-row-expanded {
+    background-color: #68c6d4; /* Morado claro */
+    color: white;
+
+  }
+  
+  /* Estilos para los roles expandidos */
+  .roles-row-expanded {
+    background-color: #f7a6d5; /* Rosa claro */
+  }
+
+
+  .checkbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #222;
+    color: white;
+    gap: 0.5rem;
+  }
+  
+  .checkbox-item {
+    flex-basis: calc(20% - 2rem);
+    max-width: calc(20% - 2rem);
+  }
+
+
+
+  ::ng-deep .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+    background-color: #0D3C61 !important; /* Verde cuando está encendido */
+    border-color: #0D3C61 !important;
+  }
+  
+  /* Cambiar el color del switch apagado */
+  ::ng-deep .p-inputswitch .p-inputswitch-slider {
+    background-color: #f44336 !important; /* Rojo cuando está apagado */
+    border-color: #f44336 !important;
+  }
