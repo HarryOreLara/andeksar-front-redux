@@ -1,5 +1,5 @@
 
-import { SharedAccesosEffectsArray } from "./store/accesos/acessos.reducer";
+import { SharedAccesosEffectsArray } from "./store/accesos/accesos.effects";
 import { AuthEffects } from "./store/auth/effects/auth.effects";
 import { SharedEffectsArray } from "./store/shared/shared.effects";
 

@@ -1,34 +1,20 @@
-import { createReducer, on } from "@ngrx/store";
-import { Agencia } from "src/app/core/class/agencias/agencias.class";
-import {  listarAgenciasSuccess } from "../actions/agencias.actions";
+import { createReducer, on } from '@ngrx/store';
+import { Agencia } from 'src/app/core/class/agencias/agencias.class';
 
-
-
-export interface AgenciasState{
-    agencia:Agencia[],
-    loaded:boolean,
-    loading:boolean,
-    error:any
+export interface AgenciasState {
+  agencias: Agencia[];
+  agencia: Agencia;
+  loaded: boolean;
+  loading: boolean;
+  error: any;
 }
 
+export const agenciaInitialState: AgenciasState = {
+  agencias: [],
+  agencia: new Agencia(),
+  loaded: false,
+  loading: false,
+  error: null,
+};
 
-
-export const agenciaInitialState:AgenciasState = {
-    agencia:[],
-    loaded:false,
-    loading:false,
-    error:null
-}
-
-
-
-export const agenciasReducer = createReducer(
-    agenciaInitialState,
-
-    on(listarAgenciasSuccess,(state,{agencia})=>({
-        ...state,
-        loading:false,
-        loaded:true,
-        agencia:agencia
-    }))
-);
+export const agenciaReducer = createReducer(agenciaInitialState);
