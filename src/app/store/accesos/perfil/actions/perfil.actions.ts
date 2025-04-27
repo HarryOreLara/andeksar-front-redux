@@ -10,7 +10,7 @@ export const listarPerfilesSuccess = createAction(
 
 export const perfilError = createAction(
   '[Perfil] Listar Perfiles Error',
-  (error: any) => ({ error })
+  props<{ error: any }>()
 );
 
 
