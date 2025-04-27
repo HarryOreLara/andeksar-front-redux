@@ -1,4 +1,4 @@
-import { Estandar } from "../../estandar/Estandar.class";
+import { Estandar } from '../../estandar/Estandar.class';
 
 export class Vehiculo {
   id: number;
@@ -53,20 +53,5 @@ export class Vehiculo {
       externo: vehiculo.externo,
       estado: vehiculo.estado.id,
     };
-  }
-
-  isEmpty(): boolean {
-    return (
-      this.id === 0 &&
-      this.ejes === 0 &&
-      this.fechaInscripcion === new Date() &&
-      this.placa === '' &&
-      this.serieVehiculo === '' &&
-      this.marca === '' &&
-      this.modelo === '' &&
-      this.serieMotor === '' &&
-      this.externo === false &&
-      this.estado.id === 0 
-    );
   }
 }

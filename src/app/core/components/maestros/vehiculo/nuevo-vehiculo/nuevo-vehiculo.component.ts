@@ -7,12 +7,19 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Subject, takeUntil } from 'rxjs';
 import { Vehiculo } from 'src/app/core/class/operaciones/programaciones/Vehiculo.class';
 import { createNuevoVehiculoForm } from 'src/app/core/forms/maestros/vehiculo/vehiculo.form';
-import { VehiculoService } from 'src/app/services/vehiculo/vehiculo.service';
 import { convertToJsonVehiculo } from 'src/app/shared/functions/maestros.functions';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { AppState } from 'src/app/store/app.reducers';
+import {
+  actualizarVehiculo,
+  crearVehiculo,
+  obtenerVehiculo,
+} from 'src/app/store/maestros/vehiculo/actions/vehiculo.actions';
+import { selectVehiculos } from 'src/app/store/maestros/vehiculo/selector/vehiculo.selector';
 
 @Component({
   selector: 'app-nuevo-vehiculo',
@@ -20,7 +27,8 @@ import { AlertService } from 'src/app/shared/services/alert.service';
   styleUrls: ['./nuevo-vehiculo.component.css'],
 })
 export class NuevoVehiculoComponent implements OnInit, OnDestroy {
-  private subscription: Subscription = new Subscription();
+  private subject$: Subject<void> = new Subject<void>();
+
   @Input() isNewVehiculo: boolean = false;
   @Output() onHideEmit: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() vehiculoId: number = 0;
@@ -36,8 +44,8 @@ export class NuevoVehiculoComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private vehiculoService: VehiculoService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {}
@@ -45,21 +53,17 @@ export class NuevoVehiculoComponent implements OnInit, OnDestroy {
   onShow() {
     if (this.vehiculoId == 0) return;
 
-    this.subscription.add(
-      this.vehiculoService
-        .obtenerVehiculoByIdService$(this.vehiculoId)
-        .subscribe({
-          next: (response) => {
-            this.nuevoVehiculoForm.patchValue(response);
-          },
-          error: (error) => {
-            this.alertService.showError(
-              'Error',
-              'Error al obtener el vehiculo'
-            );
-          },
-        })
-    );
+    this.store
+      .select(selectVehiculos)
+      .pipe(takeUntil(this.subject$))
+      .subscribe({
+        next: (data) => {
+          const { vehiculo, loading, error } = data;
+          this.nuevoVehiculoForm.patchValue(vehiculo);
+        },
+      });
+
+    this.store.dispatch(obtenerVehiculo({ id: this.vehiculoId }));
   }
 
   onHide() {
@@ -94,44 +98,31 @@ export class NuevoVehiculoComponent implements OnInit, OnDestroy {
         this.guardarVehiculo(vehiculo);
         break;
       default:
-        this.actualizarVehipculo(vehiculo);
+        this.actualizarVehiculo(vehiculo);
         break;
     }
   }
 
   guardarVehiculo(vehiculo: Vehiculo) {
-    this.vehiculoService.crearVehiculoService$(vehiculo).subscribe({
-      next: (response) => {
-        this.refreshVehiculo.emit(true);
-        this.alertService.showSuccess(
-          'Vehiculo creado',
-          'Vehiculo creado con éxito'
-        );
-        this.onHide();
-      },
-      error: (error) => {
-        this.alertService.showError('Error', 'Error al crear el vehiculo');
-      },
-    });
+    this.store.dispatch(crearVehiculo({ vehiculo }));
+    this.alertService.showSuccess(
+      'Vehiculo creado',
+      'Vehiculo creado con éxito'
+    );
+    this.onHide();
   }
 
-  actualizarVehipculo(vehiculo: Vehiculo) {
-    this.vehiculoService.actualizarVehiculoService$(vehiculo).subscribe({
-      next: (response) => {
-        this.alertService.showSuccess(
-          'Vehiculo actualizado',
-          'Vehiculo actualizado con éxito'
-        );
-        this.refreshVehiculo.emit(true);
-        this.onHide();
-      },
-      error: (error) => {
-        this.alertService.showError('Error', 'Error al actualizar el vehiculo');
-      },
-    });
+  actualizarVehiculo(vehiculo: Vehiculo) {
+    this.store.dispatch(actualizarVehiculo({ vehiculo }));
+    this.alertService.showSuccess(
+      'Vehiculo actualizado',
+      'Vehiculo actualizado con éxito'
+    );
+    this.onHide();
   }
 
   ngOnDestroy(): void {
-    this.subscription.unsubscribe();
+    this.subject$.next();
+    this.subject$.complete();
   }
 }
