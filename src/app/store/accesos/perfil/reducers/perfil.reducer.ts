@@ -6,10 +6,14 @@ import {
   listarPerfilesSuccess,
   obtenerPerfil,
   obtenerPerfilSuccess,
+  crearPerfil,
+  crearPerfilSuccess,
+  actualizarPerfil,
+  actualizarPerfilSuccess,
 } from '../actions/perfil.actions';
 
 export interface PerfilState {
-  perfil:Estandar;
+  perfil: Estandar;
   perfiles: Estandar[];
   loaded: boolean;
   loading: boolean;
@@ -57,5 +61,36 @@ export const perfilReducer = createReducer(
     loaded: true,
     loading: false,
     error: null,
-  }))
+  })),
+  on(crearPerfil, (state) => ({
+    ...state,
+    loaded: false,
+    loading: true,
+    error: null,
+  })),
+  on(crearPerfilSuccess, (state, { perfil }) => ({
+    ...state,
+    perfiles: [...state.perfiles, perfil],
+    loaded: true,
+    loading: false,
+    error: null,
+  })),
+  on(actualizarPerfil, (state) => ({
+    ...state,
+    loaded: false,
+    loading: true,
+    error: null,
+  })),
+  on(actualizarPerfilSuccess, (state, { perfil }) => {
+    const perfiles = state.perfiles.map((p) =>
+      p.id === perfil.id ? { ...perfil } : p
+    );
+    return {
+      ...state,
+      perfiles: [...perfiles],
+      loaded: true,
+      loading: false,
+      error: null,
+    };
+  })
 );

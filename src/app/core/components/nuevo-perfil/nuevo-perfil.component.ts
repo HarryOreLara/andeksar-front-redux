@@ -10,11 +10,14 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 import { Estandar } from 'src/app/core/class/estandar/Estandar.class';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { PerfilService } from '../../services/perfil/perfil.service';
 import { convertToJsonEstandar } from 'src/app/shared/functions/estandar.function';
 import { AppState } from 'src/app/store/app.reducers';
 import { Store } from '@ngrx/store';
-import { obtenerPerfil } from 'src/app/store/accesos/perfil/actions/perfil.actions';
+import {
+  actualizarPerfil,
+  crearPerfil,
+  obtenerPerfil,
+} from 'src/app/store/accesos/perfil/actions/perfil.actions';
 import { selectPerfiles } from 'src/app/store/accesos/perfil/selector/perfil.selector';
 
 @Component({
@@ -37,10 +40,8 @@ export class NuevoPerfilComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-
     private readonly fb: FormBuilder,
     private readonly alertService: AlertService,
-    private readonly perfilService: PerfilService
   ) {}
 
   ngOnInit(): void {}
@@ -81,30 +82,15 @@ export class NuevoPerfilComponent implements OnInit, OnDestroy {
   }
 
   guardarPerfil(perfil: Estandar) {
-    // this.subscription.add(
-    //   this.perfilService.insertPerfilService$(perfil).subscribe({
-    //     next: (data) => {
-    //       this.alertService.showSuccess('Exito', 'Perfil creado correctamente');
-    //       this.onHide();
-    //       this.refreshPerfiles.emit(true);
-    //     },
-    //   })
-    // );
+    this.store.dispatch(crearPerfil({ perfil }));
+    this.alertService.showSuccess('Exito', 'Perfil creado correctamente');
+    this.onHide();
   }
 
   actualizarPerfil(perfil: Estandar) {
-    // this.subscription.add(
-    //   this.perfilService.updatePerfilService$(perfil).subscribe({
-    //     next: (data) => {
-    //       this.alertService.showSuccess(
-    //         'Exito',
-    //         'Perfil actualizado correctamente'
-    //       );
-    //       this.onHide();
-    //       this.refreshPerfiles.emit(true);
-    //     },
-    //   })
-    // );
+    this.store.dispatch(actualizarPerfil({ perfil }));
+    this.alertService.showSuccess('Exito', 'Perfil actualizado correctamente');
+    this.onHide();
   }
 
   clearComponent() {
