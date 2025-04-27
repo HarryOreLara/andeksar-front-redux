@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { NuevoPerfilModule } from './nuevo-perfil/nuevo-perfil.module';
+import { NuevoPerfilModule } from './accesos/nuevo-perfil/nuevo-perfil.module';
 
 @NgModule({
   declarations: [],

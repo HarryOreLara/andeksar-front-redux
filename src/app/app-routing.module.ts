@@ -35,13 +35,13 @@ const routes: Routes = [
       //       (m) => m.PersonalModule
       //     ),
       // },
-      // {
-      //   path: 'maestros',
-      //   loadChildren: () =>
-      //     import('./pages/maestros/maestros.module').then(
-      //       (m) => m.MaestrosModule
-      //     ),
-      // },
+      {
+        path: 'maestros',
+        loadChildren: () =>
+          import('./pages/maestros/maestros.module').then(
+            (m) => m.MaestrosModule
+          ),
+      },
       {
         path: 'accesos',
         loadChildren: () =>

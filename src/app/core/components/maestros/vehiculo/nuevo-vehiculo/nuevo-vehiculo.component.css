@@ -1,0 +1,21 @@
+::ng-deep .p-selectbutton .p-button.p-highlight {
+  background-color: #0D3C61;
+  color: white;
+  border-color: #0D3C61;
+}
+
+::ng-deep .p-selectbutton .p-button {
+  background-color: #ffffff;
+  color: #555a62;
+}
+
+
+::ng-deep .p-datepicker-trigger {
+  background-color: #0D3C61; 
+  border: none; 
+  color: white; 
+}
+
+::ng-deep .p-datepicker-trigger:hover {
+  background-color: #0D3C61; 
+}

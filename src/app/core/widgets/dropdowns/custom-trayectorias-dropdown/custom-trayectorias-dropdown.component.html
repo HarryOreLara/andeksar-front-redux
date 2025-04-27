@@ -1,0 +1,12 @@
+<span class="p-float-label">
+    <p-dropdown
+      appendTo="body"
+      optionLabel="descripcion"
+      [formControl]="trayectoriaControl"
+      [options]="trayectorias"
+      (onChange)="handleValueChange($event)"
+      placeholder="Seleccione una trayectoria"
+    />
+    <label for="float-label" class="ml-2">Trayectorias</label>
+  </span>
+  

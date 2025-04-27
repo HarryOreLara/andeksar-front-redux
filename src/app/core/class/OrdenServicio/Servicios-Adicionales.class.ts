@@ -1,23 +1,18 @@
-export class ServiciosAdicionales{
+export class ServiciosAdicionales {
   uniqueId: string;
-  id:number;
-  descripcion:string;
-  nombre:string;
-  createdAt:string;
-  state:string;
-  value:number;
+  id: number;
+  descripcion: string;
+  nombre: string;
+  createdAt: string;
+  state: string;
+  value: number;
 
-  precio:number;
-  total:number;
-  nroBultos:number;
-  unidadMedida:number;
-  observacion:string;
-  porcentaje:number;
+  precio: number;
+  total: number;
+  nroBultos: number;
+  unidadMedida: number;
 
-
-  constructor(
-    serviciosAdicionales:Partial<ServiciosAdicionales> = {}
-  ){
+  constructor(serviciosAdicionales: Partial<ServiciosAdicionales> = {}) {
     this.uniqueId = serviciosAdicionales.uniqueId || '';
     this.id = serviciosAdicionales.id || 0;
     this.descripcion = serviciosAdicionales.descripcion || '';
@@ -30,13 +25,15 @@ export class ServiciosAdicionales{
     this.total = serviciosAdicionales.total || 0;
     this.nroBultos = serviciosAdicionales.nroBultos || 0;
     this.unidadMedida = serviciosAdicionales.unidadMedida || 0;
-    this.observacion = serviciosAdicionales.observacion || '';
-    this.porcentaje = serviciosAdicionales.porcentaje || 0;
   }
 
+  static fromJsonArray(serviciosAdicionalesJson: any[]): ServiciosAdicionales[] {
+    return serviciosAdicionalesJson.map((serviciosAdicionales) =>
+      ServiciosAdicionales.fromJson(serviciosAdicionales)
+    );
+  }
 
-
-  static fromJson(serviciosAdicionalesJson:any):ServiciosAdicionales{
+  static fromJson(serviciosAdicionalesJson: any): ServiciosAdicionales {
     return new ServiciosAdicionales({
       uniqueId: serviciosAdicionalesJson.uniqueId,
       id: serviciosAdicionalesJson.id,
@@ -49,14 +46,11 @@ export class ServiciosAdicionales{
       total: serviciosAdicionalesJson.total,
       nroBultos: serviciosAdicionalesJson.nroBultos,
       unidadMedida: serviciosAdicionalesJson.unidadMedida,
-      observacion: serviciosAdicionalesJson.observacion,
-      porcentaje: serviciosAdicionalesJson.porcentaje
-    })
+    });
   }
 
-
-  static toJson(serviciosAdicionales:ServiciosAdicionales):any{
-    return{
+  static toJson(serviciosAdicionales: ServiciosAdicionales): any {
+    return {
       uniqueId: serviciosAdicionales.uniqueId,
       id: serviciosAdicionales.id,
       descripcion: serviciosAdicionales.descripcion,
@@ -68,8 +62,12 @@ export class ServiciosAdicionales{
       total: serviciosAdicionales.total,
       nroBultos: serviciosAdicionales.nroBultos,
       unidadMedida: serviciosAdicionales.unidadMedida,
-      observacion: serviciosAdicionales.observacion,
-      porcentaje: serviciosAdicionales.porcentaje
-    }
+    };
+  }
+
+  static toJsonArray(serviciosAdicionales: ServiciosAdicionales[]): any[] {
+    return serviciosAdicionales.map((serviciosAdicionales) =>
+      ServiciosAdicionales.toJson(serviciosAdicionales)
+    );
   }
 }

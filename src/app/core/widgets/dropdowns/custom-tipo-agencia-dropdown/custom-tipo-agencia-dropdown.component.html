@@ -1,0 +1,14 @@
+<span class="p-float-label">
+    <p-dropdown
+      placeholder="Selecciona un lugar"
+      [options]="tipoAgencias"
+      appendTo="body"
+      [optionLabel]="optionLabel"
+      [filterBy]="filterBy"
+      [formControl]="tipoAgenciasControl"
+      [filter]="filter"
+      (onChange)="handleValueChange($event)"
+    ></p-dropdown>
+    <label for="float-label" class="ml-2">{{ label }}</label>
+  </span>
+  

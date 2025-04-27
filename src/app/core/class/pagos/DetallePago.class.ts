@@ -12,6 +12,9 @@ export class DetallePago {
   usuario: string;
   nroOperacion: string;
   fechaOperacion: string;
+  comprobantes:number[] ;
+  estado:boolean
+  motivoEliminado:string;
 
   constructor(detallePago: Partial<DetallePago> = {}) {
     this.id = detallePago.id ?? 0;
@@ -24,6 +27,13 @@ export class DetallePago {
     this.usuario = detallePago.usuario ?? '';
     this.nroOperacion = detallePago.nroOperacion ?? '';
     this.fechaOperacion = detallePago.fechaOperacion ?? new Date().toISOString();
+    this.comprobantes = detallePago.comprobantes ?? [];
+    this.estado = detallePago.estado ?? true;
+    this.motivoEliminado = detallePago.motivoEliminado ?? '';
+  }
+
+  static fromJsonArray(data: any[]): DetallePago[] {
+    return data.map((item) => DetallePago.fromJson(item));
   }
 
   static fromJson(data: any): DetallePago {
@@ -38,21 +48,33 @@ export class DetallePago {
       usuario: data.usuario,
       nroOperacion: data.nroOperacion,
       fechaOperacion: data.fechaOperacion,
+      comprobantes: data.comprobantes,
+      estado: data.estado,
+      motivoEliminado: data.motivoEliminado,
     });
   }
 
-  static toJson(detallePago: any): any {
+  static toJson(detallePago: DetallePago): any {
     return {
       id: detallePago.id,
       idOrden: detallePago.idOrden,
       idCaja: detallePago.idCaja,
       fecha: detallePago.fecha,
       importe: detallePago.importe,
-      metodoPago: Estandar.toJson(detallePago.metodoPago),
-      pagante: detallePago.pagante,
+      idMetodoPago: detallePago.metodoPago.id,
+      idPagante: detallePago.pagante.id,
       usuario: detallePago.usuario,
       nroOperacion: detallePago.nroOperacion,
       fechaOperacion: detallePago.fechaOperacion || new Date().toISOString(),
+      comprobantes: detallePago.comprobantes,
+      estado: detallePago.estado,
+      motivoEliminado: detallePago.motivoEliminado,
     };
   }
+
+  static toJsonArray(detallePago: DetallePago[]): any {
+    return detallePago.map((detalle) => DetallePago.toJson(detalle));
+  }
+
+
 }

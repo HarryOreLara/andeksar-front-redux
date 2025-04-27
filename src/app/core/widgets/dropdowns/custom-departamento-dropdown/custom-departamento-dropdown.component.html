@@ -1,0 +1,13 @@
+<span class="p-float-label">
+  <p-dropdown
+    placeholder="Selecciona un Departamento"
+    [options]="departamento"
+    optionLabel="descripcion"
+    filterBy="descripcion"
+    appendTo="body"
+    (onChange)="handleValueChange($event)"
+    [formControl]="departamentoControl"
+    [filter]="true"
+  />
+  <label for="float-label" class="ml-2">Departamento</label>
+</span>

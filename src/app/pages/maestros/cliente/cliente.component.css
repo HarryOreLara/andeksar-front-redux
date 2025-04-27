@@ -1,0 +1,10 @@
+::ng-deep .p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+    background-color: #0D3C61 !important; /* Verde cuando está encendido */
+    border-color: #0D3C61 !important;
+  }
+  
+  /* Cambiar el color del switch apagado */
+  ::ng-deep .p-inputswitch .p-inputswitch-slider {
+    background-color: #f44336 !important; /* Rojo cuando está apagado */
+    border-color: #f44336 !important;
+  }

@@ -1,0 +1,87 @@
+import { Agencia } from '../../class/agencias/agencias.class';
+import { IngresosEgresos } from '../../class/reportes/caja/IngresosEgresos.class';
+import {
+  Estandar,
+  TypeDocumentResponseDto,
+} from '../../class/estandar/Estandar.class';
+import { UnidadMedida } from '../../class/unidad-medida/UnidadMedida.class';
+
+export const CINGRESOS_EGRESOS: IngresosEgresos[] = [
+  {
+    id: 1,
+    fecha: new Date().toISOString(),
+    nroOperacion: 1,
+    agencia: Agencia.fromJson({
+      id: 0,
+      nombreAgencia: 'Lima',
+      horarioInicio: '',
+      horarioTermino: '',
+      fK_EstadoAgencia: 0,
+      fechaCreacion: '',
+      direccionAgencia: '',
+      usuarioCreacion: 0,
+      usuarioUltimaModificacion: 0,
+      activo: false,
+    }),
+    tipoMovimiento: Estandar.fromJson({ id: 0, descripcion: '' }),
+    cuentaGeneral: Estandar.fromJson({ id: 0, descripcion: 'General' }),
+    cuentaDetalle: Estandar.fromJson({ id: 0, descripcion: 'Detalle Cuenta' }),
+    detalleGlosa: 'Detalle uno',
+    tipoDocumentoSerie: UnidadMedida.fromJson({
+      id: 1,
+      sigla: 'DNI',
+      descripcion: 'Documento Nacional de Identidad',
+      estado: true,
+      createdAt: new Date(),
+    }),
+    serie: 'ABC123',
+    cuentaDestino: 'CANCELACION',
+    importeEgreso: 100,
+    importeIngreso: 500,
+    importeEfectivo: 400,
+    abonosBCP: 100,
+    abonosBBVA: 100,
+    abonosSCOTIA: 100,
+    guiaRemision: '123456',
+    detalle: 'Detalle de ingreso',
+
+  },
+  {
+    id:2,
+    nroOperacion: 2,
+    fecha: new Date().toISOString(),
+    agencia: Agencia.fromJson({
+      id: 0,
+      nombreAgencia: 'Lima',
+      horarioInicio: '',
+      horarioTermino: '',
+      fK_EstadoAgencia: 0,
+      fechaCreacion: '',
+      direccionAgencia: '',
+      usuarioCreacion: 0,
+      usuarioUltimaModificacion: 0,
+      activo: false,
+    }),
+    tipoMovimiento: Estandar.fromJson({ id: 0, descripcion: '' }),
+    cuentaGeneral: Estandar.fromJson({ id: 0, descripcion: 'General' }),
+    cuentaDetalle: Estandar.fromJson({ id: 0, descripcion: 'Detalle Cuenta' }),
+    detalleGlosa: 'Detalle dos',
+    tipoDocumentoSerie: UnidadMedida.fromJson({
+      id: 1,
+      sigla: 'DNI',
+      descripcion: 'Documento Nacional de Identidad',
+      estado: true,
+      createdAt: new Date(),
+    }),
+    serie: 'ABC123',
+    cuentaDestino: 'ADELANTO FLETE',
+    importeEgreso: 200,
+    importeIngreso: 300,
+    importeEfectivo: 100,
+    abonosBCP: 100,
+    abonosBBVA: 100,
+    abonosSCOTIA: 100,
+    guiaRemision: '123456',
+    detalle: 'Detalle de ingreso',
+  }
+];

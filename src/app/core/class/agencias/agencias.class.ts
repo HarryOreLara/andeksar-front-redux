@@ -9,7 +9,12 @@ export class Agencia {
   horarioTermino: Date;
   departamento: Estandar;
   provincia: Estandar;
-  activo: ActivosState;
+  activo: boolean;
+  longitud: string;
+  latitud: string;
+  tipoAgencia: Estandar;
+  agenciaPadre: Estandar;
+
   idTrayectoria: number;
   viaje: string;
   estiba: string;
@@ -25,7 +30,12 @@ export class Agencia {
     this.horarioInicio = agencia.horarioInicio ?? new Date();
     this.horarioTermino = agencia.horarioTermino ?? new Date();
     this.direccion = agencia.direccion ?? '';
-    this.activo = agencia.activo ?? ActivosState.ACTIVO;
+    this.activo = agencia.activo ?? true;
+
+    this.longitud = agencia.longitud ?? '';
+    this.latitud = agencia.latitud ?? '';
+    this.tipoAgencia = agencia.tipoAgencia ?? new Estandar();
+    this.agenciaPadre = agencia.agenciaPadre ?? new Estandar();
     this.viaje = agencia.viaje ?? '';
     this.estiba = agencia.estiba ?? '';
     this.orden = agencia.orden ?? 0;
@@ -43,7 +53,16 @@ export class Agencia {
       direccion: agenciaJson.direccion,
       departamento: Estandar.fromJson(agenciaJson.departamento),
       provincia: Estandar.fromJson(agenciaJson.provincia),
-      activo: agenciaJson.activo ? ActivosState.ACTIVO : ActivosState.INACTIVO,
+      activo: agenciaJson.activo == ActivosState.ACTIVO ? true : false,
+
+      longitud: agenciaJson.longitud ?? '',
+      latitud: agenciaJson.latitud ?? '',
+      tipoAgencia: agenciaJson.tipoAgencia
+        ? Estandar.fromJson(agenciaJson.tipoAgencia)
+        : new Estandar(),
+      agenciaPadre: agenciaJson.agenciaPadre
+        ? Estandar.fromJson(agenciaJson.agenciaPadre)
+        : new Estandar(),
     });
   }
 
@@ -55,7 +74,7 @@ export class Agencia {
       horarioInicio: agencia.horarioInicio,
       horarioTermino: agencia.horarioTermino,
       direccion: agencia.direccion,
-      activo: agencia.activo ? ActivosState.ACTIVO : ActivosState.INACTIVO,
+      activo: agencia.activo == ActivosState.ACTIVO ? true : false,
     });
   }
 
@@ -66,9 +85,13 @@ export class Agencia {
       direccion: agency.direccion,
       horarioInicio: agency.horarioInicio,
       horarioTermino: agency.horarioTermino,
-      provincia: agency.provincia.id,
-      activo: agency.activo,
+      idProvincia: agency.provincia.id,
+      activo: agency.activo ? ActivosState.ACTIVO : ActivosState.INACTIVO,
+      longitud: agency.longitud,
+      latitud: agency.latitud,
+      idTipoAgencia: agency.tipoAgencia.id,
+      idAgenciaPadre: agency.agenciaPadre.id ?? 0,
     };
   }
-
 }
+

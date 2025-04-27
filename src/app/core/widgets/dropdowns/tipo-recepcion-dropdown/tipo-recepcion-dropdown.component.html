@@ -1,0 +1,10 @@
+<span class="p-float-label">
+  <p-dropdown
+    [options]="tiposDeliverys"
+    placeholder="Selecciona un tipo de Entrega"
+    [formControl]="tipoRecepcionControl"
+    optionLabel="descripcion"
+    (onChange)="handleValueChange($event)"
+  />
+  <label for="float-label" class="ml-2">{{label}}</label>
+</span>

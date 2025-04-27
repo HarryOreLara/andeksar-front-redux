@@ -1,0 +1,14 @@
+<span class="p-float-label col-12">
+    <p-dropdown
+    optionLabel="descripcion"
+    filterBy="descripcion"
+    appendTo="body"
+    [options]="distritos"
+      (onChange)="handleValueChange($event)"
+      [formControl]="distritoControl"
+      [filter]="true"
+      placeholder="Selecciona un Distrito"
+    />
+    <label for="float-label" class="ml-2">Distrito</label>
+  </span>
+  

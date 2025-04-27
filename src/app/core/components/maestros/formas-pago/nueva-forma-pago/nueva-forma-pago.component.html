@@ -1,0 +1,113 @@
+<p-dialog
+  [(visible)]="isNuevaFormaPago"
+  appendTo="body"
+  (onShow)="onShow()"
+  (onHide)="onHide()"
+  [modal]="true"
+  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
+  [style]="{ width: '52vw' }"
+  [header]="formaPago.id ? 'Editar Forma de Pago' : 'Nueva Forma de Pago'"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="flex flex-column gap-2">
+      <h1 class="m-0 text-900 font-semibold text-xl line-height-3">
+        {{ formaPago.id ? "Editar Forma de Pago" : "Nueva Forma de Pago" }}
+      </h1>
+      <span class="text-600 text-base">
+        {{
+          formaPago.id
+            ? "Editar una forma de pago de"
+            : "Añade una nueva forma de pago a"
+        }}
+        tu lista de pagos
+      </span>
+    </div>
+  </ng-template>
+  <form class="flex flex-column gap-3 mt-3" [formGroup]="formaPagoForm" (ngSubmit)="crearFormaPago()">
+    <div>
+      <label for="nombreFormaPago" class="block mb-1 text-color text-base"
+        >Nombre de la forma de pago</label
+      >
+      <span class="p-input-icon-left w-full">
+        <i class="pi pi-wallet"></i>
+        <input
+          name="nombreFormaPago"
+          type="text"
+          class="w-full"
+          placeholder="Ejemplo: Tarjeta de Credito"
+          formControlName="nombre"
+          autocomplete="off"
+          id="nombreFormaPago"
+          pInputText
+        />
+      </span>
+    </div>
+    <div>
+      <label for="cuentaBanco" class="block mb-1 text-color text-base"
+        >Cuenta de banco o numero de Telefono</label
+      >
+      <span class="p-input-icon-left w-full">
+        <i class="pi pi-credit-card"></i>
+        <input
+          name="cc"
+          type="text"
+          class="w-full"
+          id="cuentaBanco"
+          formControlName="cuentaBanco"
+          autocomplete="off"
+          pInputText
+          placeholder="1234-1234-1234-1234"
+        />
+      </span>
+    </div>
+    <div class="flex gap-3">
+      <div class="w-full">
+        <label for="descripcion" class="block mb-1 text-color text-base"
+          >Descripción</label
+        >
+        <span class="p-input-icon-left w-full">
+          <i class="pi pi-pencil"></i>
+          <input
+            name="descripcion"
+            type="text"
+            class="w-full"
+            autocomplete="off"
+            formControlName="descripcion"
+            id="descripcion"
+            pInputText
+            pKeyFilter="int"
+            placeholder="Ingrese un texto descriptivo"
+          />
+        </span>
+      </div>
+
+      <div class="w-full">
+        <label for="expiration" class="block mb-1 text-color text-base"
+          >Estado</label
+        >
+        <p-selectButton
+          [options]="stateOptions"
+          optionLabel="descripcion"
+          formControlName="estado"
+          optionValue="id"
+        ></p-selectButton>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <div
+      class="flex gap-3 justify-content-end border-top-1 surface-border pt-5"
+    >
+      <button pButton pRipple label="Cancel" class="p-button-text"></button>
+      <button
+        pButton
+        pRipple
+        (click)="crearFormaPago()"
+        [label]="formaPago.id ? 'Actualizar' : 'Guardar'"
+        class="p-button-rounded"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>

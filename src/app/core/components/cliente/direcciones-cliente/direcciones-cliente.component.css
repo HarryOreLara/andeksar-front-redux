@@ -1,0 +1,8 @@
+/* En tu archivo CSS */
+.sidebar-lg {
+    width: 30% !important;
+  }
+  
+  .sidebar-sm {
+    width: 50% !important;
+  }

@@ -1,0 +1,175 @@
+<p-toast></p-toast>
+
+<p-dialog
+  [(visible)]="isNewVehiculo"
+  (onShow)="onShow()"
+  (onHide)="onHide()"
+  appendTo="body"
+  [modal]="true"
+  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
+  [style]="{ width: '52vw' }"
+  header="NUEVO VEHICULO"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="flex flex-column gap-2">
+      <h1 class="m-0 text-900 font-semibold text-xl line-height-3">
+        NUEVO VEHICULO
+      </h1>
+      <span class="text-600 text-base"
+        >Crea todos los vehiculos que concideres necesario</span
+      >
+    </div>
+  </ng-template>
+  <form
+    class="flex flex-column gap-3 mt-4"
+    [formGroup]="nuevoVehiculoForm"
+    (ngSubmit)="crearVehiculo()"
+  >
+    <div class="grid formgrid p-fluid">
+      <div class="field mb-4 col-12 md:col-6">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <p-inputNumber
+              inputId="integeronly"
+              autocomplete="off"
+              formControlName="ejes"
+            ></p-inputNumber>
+            <label htmlFor="ejes" class="ml-3">Ejes</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-6">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <p-calendar
+              appendTo="body"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              formControlName="fechaInscripcion"
+            ></p-calendar>
+            <label for="float-label" class="ml-3">Fecha de Inscripción</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-6">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              pInputText
+              id="placa"
+              autocomplete="off"
+              formControlName="placa"
+            />
+            <label htmlFor="placa" class="ml-3">Placa</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-6">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              pInputText
+              id="serieVehiculo"
+              autocomplete="off"
+              formControlName="serieVehiculo"
+            />
+            <label htmlFor="serieVehiculo" class="ml-3"
+              >Serie de Vehiculo</label
+            >
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-4">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              pInputText
+              id="marca"
+              autocomplete="off"
+              formControlName="marca"
+            />
+            <label htmlFor="marca" class="ml-3">Marca</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-4">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              pInputText
+              id="modelo"
+              autocomplete="off"
+              formControlName="modelo"
+            />
+            <label htmlFor="modelo" class="ml-3">Modelo</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-4">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <app-custom-estado-vehiculo-dropdown
+              formControlName="estado"
+            ></app-custom-estado-vehiculo-dropdown>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-6">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              pInputText
+              id="serieMotor"
+              autocomplete="off"
+              formControlName="serieMotor"
+            />
+            <label htmlFor="serieMotor" class="ml-3">Serie del Motor</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-6">
+        <div class="mb-3 flex align-items-center">
+          <p-selectButton
+            [options]="externoOptions"
+            formControlName="externo"
+            optionLabel="label"
+            [ngStyle]="{ width: '100%' }"
+            optionValue="value"
+          ></p-selectButton>
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-template pTemplate="footer">
+    <div
+      class="flex gap-3 justify-content-end border-top-1 surface-border pt-5"
+    >
+      <button
+        pButton
+        pRipple
+        type="button"
+        label="Cancelar"
+        (click)="isNewVehiculo = false"
+        class="p-button-text"
+      ></button>
+      <button
+        pButton
+        pRipple
+        type="button"
+        [label]="vehiculoId == 0 ? 'Guardar' : 'Actualizar'"
+        (click)="crearVehiculo()"
+        class="p-button-rounded bg-blue-900"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>

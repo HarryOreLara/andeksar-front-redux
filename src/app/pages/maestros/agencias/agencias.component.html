@@ -1,0 +1,111 @@
+<p-toast></p-toast>
+
+<div class="px-2 md:px-4 lg:px-2 lg:py-2">
+  <div class="flex justify-content-between align-items-center flex-wrap mb-3">
+    <div class="text-4xl font-bold text-500">AGENCIAS</div>
+    <button
+      pButton
+      type="button"
+      class="p-button-secondary ml-3 p-button-outlined w-auto"
+      pRipple
+      (click)="showNuevaAgencia()"
+      label="Nueva Agencia"
+      icon="pi pi-plus"
+    ></button>
+  </div>
+
+  <div class="grid formgrid p-fluid mt-4">
+    <p-table
+      #dt2
+      [value]="agencias"
+      dataKey="id"
+      [paginator]="true"
+      [rows]="20"
+      responsiveLayout="stack"
+      [breakpoint]="'960px'"
+      [showCurrentPageReport]="true"
+      [loading]="agencias.length === 0"
+      [rowsPerPageOptions]="[20, 30, 40]"
+      class="w-full"
+      [tableStyle]="{ 'min-width': '50rem', 'font-size': '15px' }"
+      currentPageReportTemplate="Mostrando {last} Agencias de {totalRecords}"
+      [globalFilterFields]="[
+        'nombre',
+      ]"
+    >
+      <ng-template pTemplate="caption">
+        <div class="flex justify-content-between">
+          <button
+            pButton
+            label="Limpiar"
+            class="p-button-outlined w-10rem"
+            icon="pi pi-filter-slash"
+            (click)="clear(dt2)"
+          ></button>
+          <span class="p-input-icon-left ml-auto w-20rem">
+            <i class="pi pi-search"></i>
+            <input
+              pInputText
+              type="text"
+              (input)="dt2.filterGlobal($any($event.target).value, 'contains')"
+              placeholder="Buscar..."
+            />
+          </span>
+        </div>
+      </ng-template>
+
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Nombre Agencia</th>
+          <th>Dirección</th>
+          <th>Horario Inicio</th>
+          <th>Horario Termino</th>
+          <th>Estado</th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-agencia let-columns="columns">
+        <tr class="cursor-pointer hover:bg-blue-900 hover:text-white">
+          <td>{{ agencia.nombre }}</td>
+          <td>{{ agencia.horarioInicio | date:'shortTime'  }}</td>
+          <td>{{ agencia.direccion }}</td>
+          <td>{{ agencia.horarioTermino | date:'shortTime' }}</td>
+          <td>
+            <p-tag
+              [appBooleanStatus]="agencia.activo"
+              class="text-white"
+              [styleClass]="'text-white'"
+            ></p-tag>
+          </td>
+
+          <td>
+            <button
+              pButton
+              pRipple
+              icon="pi pi-pencil"
+              class="p-button-rounded p-button-secondary mr-2"
+              (click)="editarAgencia(agencia)"
+            ></button>
+            <p-inputSwitch
+              name="payment"
+              class="ml-auto"
+              [(ngModel)]="agencia.activo "
+              (ngModelChange)="eliminarAgencia(agencia)"
+            ></p-inputSwitch>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <app-nueva-agencia
+    [isNuevaAgencia]="isNuevaAgencia"
+    [agenciaId]="agencia.id"
+    (onHideEmit)="showNuevaAgencia($event)"
+    (refreshAgencias)="cargarAgencias()"
+  ></app-nueva-agencia>
+  
+
+
+  </div>
+</div>
+

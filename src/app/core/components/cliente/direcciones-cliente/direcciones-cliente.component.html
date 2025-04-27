@@ -1,0 +1,128 @@
+<p-confirmPopup></p-confirmPopup>
+
+<p-dialog
+  header="NUEVA DIRECCION"
+  [(visible)]="isDirectionSidebarVisible"
+  [style]="{ width: '50vw', height: '50vh' }"
+  (onHide)="onHide()"
+  (onShow)="onShow()"
+  [maximizable]="true"
+  [modal]="true"
+>
+  <form class="border-round p-fluid" [formGroup]="direccionForm">
+    <div class="grid formgrid p-fluid">
+      <div class="field mb-4 col-12 md:col-3">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <app-custom-departamento-dropdown
+              formControlName="departamento"
+            ></app-custom-departamento-dropdown>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-3">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <app-custom-provincias-dropdown
+              formControlName="provincia"
+              [departamentoSelected]="departamentoSelected"
+            ></app-custom-provincias-dropdown>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-3">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              pInputText
+              id="direccion"
+              autocomplete="off"
+              formControlName="direccion"
+            />
+            <label class="ml-2" htmlFor="nombre">Direccion</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-3">
+        <div class="flex align-items-center">
+          <button
+            pButton
+            type="submit"
+            (click)="cargarDireccion()"
+            pRipple
+            label="Crear Direccion"
+            icon="pi pi-arrow-down"
+          ></button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <p-table [value]="direcciones" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Departamento</th>
+        <th>Provincia</th>
+        <th>Direccion</th>
+        <th>Direccion Principal</th>
+        <th>Estado</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-dire let-i="rowIndex">
+      <tr>
+        <td>{{ dire.departamento.descripcion }}</td>
+        <td>{{ dire.provincia.descripcion }}</td>
+        <td>{{ dire.direccion }}</td>
+        <td>
+          <p-inputSwitch
+            name="principal"
+            class="ml-auto"
+            [disabled]="!dire.activo"
+            [(ngModel)]="dire.isPrincipal"
+            (ngModelChange)="removeDireccionPrincipal($event, i, dire.idDireccion)"
+          ></p-inputSwitch>
+        </td>
+        <td>
+          <p-inputSwitch
+            name="activo"
+            class="ml-auto"
+            [disabled]="dire.isPrincipal"
+            [(ngModel)]="dire.activo"
+            (ngModelChange)="removeDirecciones($event, i, dire.idDireccion)"
+          ></p-inputSwitch>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="3">No se encontro ninguna dirección.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <ng-template pTemplate="footer">
+    <div
+      class="flex gap-3 justify-content-end border-top-1 surface-border pt-5"
+    >
+      <button
+        pButton
+        pRipple
+        label="Cancelar"
+        (click)="onHide()"
+        class="p-button-text"
+      ></button>
+      <button
+        pButton
+        pRipple
+        (click)="crearDireccion()"
+        [label]="
+          clienteId == 0 ? 'Guardar Direcciones' : 'Actualizar Direcciones'
+        "
+        class="p-button-rounded"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>

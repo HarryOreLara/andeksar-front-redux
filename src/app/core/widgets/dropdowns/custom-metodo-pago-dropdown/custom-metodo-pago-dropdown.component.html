@@ -1,0 +1,13 @@
+<span class="p-float-label">
+  <p-dropdown
+    placeholder="Seleccione un Método"
+    [options]="(metodosPagoDropdown$ | async) ?? []"
+    optionLabel="descripcion"
+    filterBy="descripcion"
+    appendTo="body"
+    (onChange)="handleValueChange($event)"
+    [formControl]="metodoPagoControl"
+    [filter]="true"
+  />
+  <label for="float-label" class="ml-2">Método de Pago</label>
+</span>

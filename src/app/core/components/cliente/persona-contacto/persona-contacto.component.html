@@ -1,0 +1,97 @@
+<p-dialog
+  header="AÑADIR PERSONAS DE CONTACTO"
+  [(visible)]="isPersonContact"
+  [style]="{ width: '60vw' }"
+  (onHide)="onHide()"
+  (onShow)="onShow()"
+  [modal]="true"
+>
+  <p-table
+    #dt1
+    [value]="contacts"
+    dataKey="id"
+    [rows]="10"
+    [showCurrentPageReport]="true"
+    [loading]="loading"
+    [paginator]="true"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} clientes"
+    [globalFilterFields]="['nombre', 'documento', 'telefono', 'activo']"
+  >
+    <ng-template pTemplate="caption">
+      <div class="flex justify-content-between">
+        <button
+          pButton
+          label="Limpiar"
+          class="p-button-outlined w-10rem"
+          icon="pi pi-filter-slash"
+          (click)="clear(dt1)"
+        ></button>
+        <span class="p-input-icon-left ml-auto w-20rem">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="dt1.filterGlobal($any($event.target).value, 'contains')"
+            placeholder="Buscar..."
+          />
+        </span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th id="nombre" style="min-width: 15rem">
+          <div class="flex align-items-center w-10rem">Nombre Completo</div>
+        </th>
+        <th id="documento" style="min-width: 15rem">
+          <div class="flex align-items-center">Documento</div>
+        </th>
+
+        <th id="direccion" style="min-width: 10rem">
+          <div class="flex align-items-center">Direccion</div>
+        </th>
+        <th id="estado" style="min-width: 10rem">
+          <div class="flex align-items-center">Estado</div>
+        </th>
+
+        <th id="seleccionar" style="width: 3rem">
+          <div class="flex align-items-center">Seleccionar</div>
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-cliente let-rowIndex="rowIndex" let-i>
+      <tr>
+        <td>
+          {{ cliente.nombre }}
+        </td>
+        <td>
+          <span class="ml-1 vertical-align-middle">{{
+            cliente.documento
+          }}</span>
+        </td>
+
+        <td>
+          {{ cliente.direccion }}
+        </td>
+        <td>
+          <p-tag
+            [value]="cliente.activo ? 'No Seleccionado' : 'Seleccionado'"
+            [severity]="cliente.activo == true ? 'danger' : 'success'"
+          ></p-tag>
+        </td>
+
+        <td class="text-center">
+          <i
+            class="pi pi-plus-circle text-2xl cursor-pointer text-blue-500"
+            (click)="selectClient(rowIndex, cliente)"
+          ></i>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7">No se encontro ningun cliente o respresentante.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>

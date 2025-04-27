@@ -1,113 +1,74 @@
-import { Estandar } from '../estandar/Estandar.class';
-import { Cliente, Direcciones } from '../maestros';
-import { DocumentoSerie } from './DocumentoSerie.class';
-import { Pagador } from './Pagador.class';
+import { mapperToOrdenServicioOrdenForm } from 'src/app/shared/mappers/orden-servicio.mapper';
+import { Cliente, Contactos } from '../maestros';
+import { Cabecera } from './Cabecera.class';
+import { Carga } from './Carga.class';
+import { DocumentoRelacionado } from './DocumentoRelacionado.class';
+import { SeguridadPago } from './SeguridadPago.class';
+import { ServiciosAdicionales } from './Servicios-Adicionales.class';
+import { NewOrdenServicio } from './NewOrdenServicio.class';
 
 export class OrdenForm {
+  id:number;
   cabecera: Cabecera;
   remitente: Cliente;
-  consignado: Cliente;
-  pago: FormaPago;
-  documentoSerie: DocumentoSerie;
+  destinatario: Cliente;
+  seguridadPago: SeguridadPago;
+  documentoRelacionado: DocumentoRelacionado;
+  objetosComunes: Carga[];
+  detalleCarga: Carga[];
+  serviciosAdicionales: ServiciosAdicionales[];
+  personaEnvia: Cliente;
+  precioTotal: number;
+  contactosDestinatario: Contactos[];
 
   constructor(orden: Partial<OrdenForm> = {}) {
-    this.cabecera = orden.cabecera || new Cabecera();
-    this.remitente = orden.remitente || new Cliente();
-    this.consignado = orden.consignado || new Cliente();
-    this.pago = orden.pago || new FormaPago();
-    this.documentoSerie = orden.documentoSerie || new DocumentoSerie();
+    this.id = orden.id ?? 0;
+    this.cabecera = orden.cabecera ?? new Cabecera();
+    this.remitente = orden.remitente ?? new Cliente();
+    this.destinatario = orden.destinatario ?? new Cliente();
+    this.seguridadPago = orden.seguridadPago ?? new SeguridadPago();
+    this.documentoRelacionado =
+      orden.documentoRelacionado ?? new DocumentoRelacionado();
+    this.objetosComunes = orden.objetosComunes ?? [];
+    this.detalleCarga = orden.detalleCarga ?? [];
+    this.serviciosAdicionales = orden.serviciosAdicionales ?? [];
+    this.personaEnvia = orden.personaEnvia ?? new Cliente();
+    this.precioTotal = orden.precioTotal ?? 0;
+    this.contactosDestinatario = orden.contactosDestinatario ?? [];
   }
 
-  static fromJson(data: any): OrdenForm {
+  static fromJson(data: NewOrdenServicio): OrdenForm {
+    const newData = mapperToOrdenServicioOrdenForm(data);
+
     return new OrdenForm({
-      cabecera: Cabecera.fromJson(data.cabecera),
+      id: data.id,
+      cabecera: Cabecera.fromJson(newData.cabecera),
       remitente: Cliente.fromJson(data.remitente),
-      consignado: Cliente.fromJson(data.consignado),
-      pago: FormaPago.fromJson(data.pago),
-      documentoSerie: DocumentoSerie.fromJson(data.documentoSerie),
+      destinatario: Cliente.fromJson(data.destinatario), //Backend
+      seguridadPago: SeguridadPago.fromJson(data.seguridadPago),
+      documentoRelacionado: DocumentoRelacionado.fromJson(data.documentoRelacionado),
+      objetosComunes: data.objetosComunes.map((carga: any) =>Carga.fromJson(carga)),
+      detalleCarga: data.detalleCarga.map((carga: any) =>Carga.fromJson(carga)),
+      serviciosAdicionales: data.serviciosAdicionales.map((servicio: any) =>ServiciosAdicionales.fromJson(servicio)),
+      personaEnvia: data.personaEnvia? Cliente.fromJson(data.personaEnvia): new Cliente(),
+      precioTotal: data.precio,
+      contactosDestinatario: data.contactosDestinatario.map((contacto: any) => Contactos.fromJson(contacto)),
     });
   }
 
   static toJson(orden: any): any {
     return {
+      id: orden.id,
       cabecera: Cabecera.toJson(orden.cabecera),
       remitente: Cliente.toJson(orden.remitente),
-      consignado: Cliente.toJson(orden.consignado),
-      pago: FormaPago.toJson(orden.pago),
-      documentoSerie: DocumentoSerie.toJson(orden.documentoSerie),
+      destinatario: Cliente.toJson(orden.destinatario),
+      seguridadPago: SeguridadPago.toJson(orden.seguridadPago),
+      documentoRelacionado: DocumentoRelacionado.toJson(
+        orden.documentoRelacionado
+      ),
     };
   }
+
+
+
 }
-
-class Cabecera {
-  origen: Estandar;
-  destino: Estandar;
-  tipoRecepcion: Estandar;
-  tipoEntrega: Estandar;
-  direccionRecepcion: Direcciones;
-  direccionEntrega: Direcciones;
-
-  constructor(cabecera: Partial<Cabecera> = {}) {
-    this.origen = cabecera.origen || new Estandar();
-    this.destino = cabecera.destino || new Estandar();
-    this.tipoRecepcion = cabecera.tipoRecepcion || new Estandar();
-    this.tipoEntrega = cabecera.tipoEntrega || new Estandar();
-    this.direccionRecepcion = cabecera.direccionRecepcion || new Direcciones();
-    this.direccionEntrega = cabecera.direccionEntrega || new Direcciones();
-  }
-
-  static fromJson(data: any): Cabecera {
-    return new Cabecera({
-      origen: Estandar.fromJson(data.origen),
-      destino: Estandar.fromJson(data.destino),
-      tipoRecepcion: Estandar.fromJson(data.tipoRecepcion),
-      tipoEntrega: Estandar.fromJson(data.tipoEntrega),
-      direccionRecepcion: Direcciones.fromJson(data.direccionRecepcion),
-      direccionEntrega: Direcciones.fromJson(data.direccionEntrega),
-    });
-  }
-
-  static toJson(cabecera: any): any {
-    return {
-      origen: Estandar.toJson(cabecera.origen),
-      destino: Estandar.toJson(cabecera.destino),
-      tipoRecepcion: Estandar.toJson(cabecera.tipoRecepcion),
-      tipoEntrega: Estandar.toJson(cabecera.tipoEntrega),
-      direccionRecepcion: Direcciones.toJson(cabecera.direccionRecepcion),
-      direccionEntrega: Direcciones.toJson(cabecera.direccionEntrega),
-    };
-  }
-}
-
-class FormaPago {
-  pagador: Pagador;
-  formaPago: Estandar;
-  codigoSeguridad: string;
-  observacion: string;
-
-  constructor(pago: Partial<FormaPago> = {}) {
-    this.pagador = pago.pagador || new Pagador();
-    this.formaPago = pago.formaPago || new Estandar();
-    this.codigoSeguridad = pago.codigoSeguridad || '';
-    this.observacion = pago.observacion || '';
-  }
-
-  static fromJson(data: any): FormaPago {
-    return new FormaPago({
-      pagador: Pagador.fromJson(data.pagador),
-      formaPago: Estandar.fromJson(data.formaPago),
-      codigoSeguridad: data.codigoSeguridad,
-      observacion: data.observacion,
-    });
-  }
-
-  static toJson(pago: any): any {
-    return {
-      pagador: Pagador.toJson(pago.pagador),
-      formaPago: Estandar.toJson(pago.formaPago),
-      codigoSeguridad: pago.codigoSeguridad,
-      observacion: pago.observacion,
-    };
-  }
-}
-

@@ -1,0 +1,127 @@
+<p-toast></p-toast>
+
+<p-dialog
+  [(visible)]="isNuevoMetodoPago"
+  appendTo="body"
+  (onShow)="onShow()"
+  (onHide)="onHide()"
+  [modal]="true"
+  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
+  [style]="{ width: '52vw' }"
+  [header]="metodoPagoId ? 'Editar Metodo de Pago' : 'Nuevo Metodo de Pago'"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="flex flex-column gap-2">
+      <h1 class="m-0 text-900 font-semibold text-xl line-height-3">
+        {{ metodoPagoId ? "Editar Metodo de Pago" : "Nuevo Metodo de Pago" }}
+      </h1>
+      <span class="text-600 text-base">
+        {{
+          metodoPagoId
+            ? "Editar una metodo de pago de"
+            : "Añade una nueva metodo de pago a"
+        }}
+        tu lista de pagos
+      </span>
+    </div>
+  </ng-template>
+  <form
+    class="flex flex-column gap-3 mt-3"
+    [formGroup]="metodoPagoForm"
+    (ngSubmit)="crearMetodoPago()"
+  >
+    <div class="my-2">
+      <label for="nombreMetodoPago" class="block mb-1 text-color text-base"
+        >Nombre del metodo de pago</label
+      >
+      <span class="p-input-icon-left w-full">
+        <i class="pi pi-wallet"></i>
+        <input
+          name="nombreMetodoPago"
+          type="text"
+          class="w-full"
+          formControlName="nombre"
+          placeholder="Ejemplo: Tarjeta de Credito"
+          autocomplete="off"
+          id="nombreMetodoPago"
+          pInputText
+        />
+      </span>
+    </div>
+    <div class="my-2">
+      <label for="cuentaBanco" class="block mb-1 text-color text-base"
+        >Cuenta de banco o numero de Telefono</label
+      >
+      <span class="p-input-icon-left w-full">
+        <i class="pi pi-credit-card"></i>
+        <input
+          name="cc"
+          type="text"
+          class="w-full"
+          id="cuentaBanco"
+          formControlName="cuentaBanco"
+          autocomplete="off"
+          pInputText
+          placeholder="1234-1234-1234-1234"
+        />
+      </span>
+    </div>
+
+    <div class="flex gap-3 my-2">
+      <div class="w-full">
+        <label for="descripcion" class="block mb-1 text-color text-base"
+          >Descripción</label
+        >
+        <span class="p-input-icon-left w-full">
+          <i class="pi pi-pencil"></i>
+          <input
+            name="descripcion"
+            type="text"
+            class="w-full"
+            autocomplete="off"
+            formControlName="descripcion"
+            id="descripcion"
+            pInputText
+            pKeyFilter="int"
+            placeholder="Ingrese un texto descriptivo"
+          />
+        </span>
+      </div>
+    </div>
+
+
+    <div class="flex gap-3 my-2">
+      <i class="pi pi-money-bill col h-3rem border-1 border-300 text-900 inline-flex justify-content-center align-items-center flex-shrink-0 border-round mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors" 
+          [ngClass]="{'border-blue-500 border-2 text-blue-500 ': icono === 'pi pi-money-bill'}" (click)="icono = 'pi pi-money-bill'"></i>
+          <i class="pi pi-credit-card col h-3rem border-1 border-300 text-900 inline-flex justify-content-center align-items-center flex-shrink-0 border-round mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors" 
+          [ngClass]="{'border-blue-500 border-2 text-blue-500 ': icono === 'pi pi-credit-card'}" (click)="icono = 'pi pi-credit-card'"></i>
+          <i class="pi pi-mobile col h-3rem border-1 border-300 text-900 inline-flex justify-content-center align-items-center flex-shrink-0 border-round mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors" 
+          [ngClass]="{'border-blue-500 border-2 text-blue-500 ': icono === 'pi pi-mobile'}" (click)="icono = 'pi pi-mobile'"></i>
+          <i class="pi pi-unlock col h-3rem border-1 border-300 text-900 inline-flex justify-content-center align-items-center flex-shrink-0 border-round mr-3 cursor-pointer hover:surface-100 transition-duration-150 transition-colors" 
+          [ngClass]="{'border-blue-500 border-2 text-blue-500 ': icono === 'pi pi-unlock'}" (click)="icono = 'pi pi-unlock'"></i>
+
+  </div>
+
+
+
+
+
+
+  </form>
+  <ng-template pTemplate="footer">
+    <div
+      class="flex gap-3 justify-content-end border-top-1 surface-border pt-5"
+    >
+      <button pButton pRipple label="Cancel" class="p-button-text"></button>
+      <button
+        pButton
+        pRipple
+        (click)="crearMetodoPago()"
+        [label]="metodoPagoId ? 'Actualizar' : 'Guardar'"
+        class="p-button-rounded"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>

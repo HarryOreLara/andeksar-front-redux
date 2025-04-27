@@ -1,0 +1,12 @@
+
+<span class="p-float-label ">
+  <p-dropdown
+  appendTo="body"
+    optionLabel="descripcion"
+    (onChange)="handleValueChange($event)"
+    [formControl]="tipoDocumentoControl"
+    [options]="typeDocuments"
+    placeholder="Seleccione un tipo de Documento"
+  />
+  <label for="float-label" class="ml-2">Tipo Documento</label>
+</span>

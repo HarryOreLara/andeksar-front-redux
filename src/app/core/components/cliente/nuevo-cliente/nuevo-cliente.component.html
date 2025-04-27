@@ -1,0 +1,247 @@
+
+<p-dialog
+  [(visible)]="hasNewClient"
+  (onShow)="onShow()"
+  (onHide)="onHide()"
+  appendTo="body"
+  [modal]="true"
+  [breakpoints]="{ '960px': '75vw', '640px': '100vw' }"
+  [style]="{ width: '52vw' }"
+  header="NUEVA AGENCIA"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="flex flex-column gap-2">
+      <h1 class="m-0 text-900 font-semibold text-xl line-height-3">
+        NUEVO CLIENTE
+      </h1>
+      <span class="text-600 text-base"
+        >Cree todos los clientes disponibles</span
+      >
+    </div>
+  </ng-template>
+
+  <form
+    class="flex flex-column gap-3 mt-4"
+    [formGroup]="clienteForm"
+    (ngSubmit)="crearCliente()"
+  >
+    <div class="grid formgrid p-fluid">
+      <div class="field mb-4 col-12 md:col-3">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <app-custom-unidad-medida-dropdown
+              formControlName="tipoDocumento"
+              [tablaSunat]="tablaSunat"
+              [label]="'Tipo de Documento'"
+            ></app-custom-unidad-medida-dropdown>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-3">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              #txtInput
+              id="documento"
+              formControlName="documento"
+              type="text"
+              autocomplete="off"
+              pInputText
+              (keyup.enter)="searchClient()"
+            />
+            <label class="ml-2" htmlFor="documento">Documento</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-3" *ngIf="!isRucSelected">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              id="nombre"
+              formControlName="nombre"
+              type="text"
+              autocomplete="off"
+              pInputText
+            />
+            <label class="ml-2" htmlFor="nombre">Nombre</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-3" *ngIf="!isRucSelected">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              id="apellidos"
+              formControlName="apellidos"
+              type="text"
+              autocomplete="off"
+              pInputText
+            />
+            <label class="ml-2" htmlFor="apellidos">Apellidos</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-6" *ngIf="isRucSelected">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              id="razonSocial"
+              formControlName="razonSocial"
+              type="text"
+              autocomplete="off"
+              pInputText
+            />
+            <label for="razonSocial" class="ml-2">Razon Social</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-4">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <app-custom-departamento-dropdown
+              formControlName="departamento"
+            ></app-custom-departamento-dropdown>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-4">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <app-custom-provincias-dropdown
+              formControlName="provincia"
+              [departamentoSelected]="departamentoSelected"
+            ></app-custom-provincias-dropdown>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-4">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <app-custom-distrito-dropdown
+              formControlName="distrito"
+              [provinciaSelected]="provinciaSelected"
+            ></app-custom-distrito-dropdown>
+          </span>
+        </div>
+      </div>
+<!-- 
+      <div class="field mb-4 col-12 md:col-4">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              id="direccionPrincipal"
+              type="text"
+              formControlName="direccion"
+              autocomplete="off"
+              pInputText
+            />
+            <label for="direccionPrincipal" class="ml-2"
+              >Direccion Principal</label
+            >
+          </span>
+        </div>
+      </div> -->
+
+      <div class="field mb-4 col-12 md:col-4">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              id="telefono"
+              type="text"
+              formControlName="telefono"
+              autocomplete="off"
+              pInputText
+            />
+            <label for="telefono" class="ml-2">Telefono</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-4">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <input
+              id="ubigeo"
+              type="text"
+              formControlName="ubigeo"
+              autocomplete="off"
+              pInputText
+            />
+            <label for="ubigeo" class="ml-2">UBIGEO</label>
+          </span>
+        </div>
+      </div>
+
+      <div class="field mb-4 col-12 md:col-4" *ngIf="isRucSelected">
+        <div class="mb-3 flex align-items-center">
+          <span class="p-float-label col-12">
+            <p-toggleButton
+              onLabel="Credito"
+              offLabel="Sin credito"
+              formControlName="credito"
+              onIcon="pi-check"
+              offIcon="pi pi-times"
+              class="w-full"
+            ></p-toggleButton>
+          </span>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      [disabled]="cliente.id == 0"
+      pRipple
+      type="button"
+      label="Ingresar Contactos"
+      (click)="showContacSidebar()"
+      icon="pi pi-arrow-up-left"
+      class="lg:w-auto w-full mt-6 lg:mr-3 p-button-secondary p-button-raised"
+    ></button>
+
+    <button
+      pButton
+      pRipple
+      [disabled]="cliente.id == 0"
+      type="button"
+      label="Ingresar Direcciones"
+      (click)="showDirectionSidebar()"
+      icon="pi pi-arrow-up-right"
+      class="lg:w-auto w-full mt-6 p-button-secondary p-button-raised"
+    ></button>
+
+    <button
+      pButton
+      icon="pi pi-file"
+      pRipple
+      type="submit"
+      [label]="clienteId == 0 ? 'Guardar Cliente' : 'Actualizar Cliente'"
+      (click)="crearCliente()"
+      class="lg:w-auto w-full mt-6 lg:mr-3 bg-blue-900 p-button-raised border-blue-900 text-white"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+
+<app-contactos-cliente
+  [isContactSidebarVisible]="isContactSidebarVisible"
+  (onHideEmit)="showContacSidebar($event)"
+  [clienteId]="cliente.id"
+></app-contactos-cliente>
+
+<app-direcciones-cliente
+  [isDirectionSidebarVisible]="isDirectionSidebarVisible"
+  (onHideEmit)="showDirectionSidebar($event)"
+  [clienteId]="cliente.id"
+></app-direcciones-cliente>

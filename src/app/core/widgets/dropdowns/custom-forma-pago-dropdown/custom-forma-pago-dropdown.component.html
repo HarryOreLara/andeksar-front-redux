@@ -1,0 +1,11 @@
+<span class="p-float-label">
+  <p-dropdown
+    appendTo="body"
+    optionLabel="descripcion"
+    [formControl]="formaPagoControl"
+    [options]="formsPayment"
+    (onChange)="handleValueChange($event)"
+    placeholder="Seleccione una forma de pago"
+  />
+  <label for="float-label" class="ml-2">Forma de Pago</label>
+</span>

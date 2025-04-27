@@ -1,0 +1,14 @@
+<span class="p-float-label">
+    <p-dropdown
+      placeholder="Selecciona un Departamento"
+      [options]="tiposLicencia"
+      optionLabel="descripcion"
+      filterBy="descripcion"
+      appendTo="body"
+      (onChange)="handleValueChange($event)"
+      [formControl]="tipoLicenciaControl"
+      [filter]="true"
+    />
+    <label for="float-label" class="ml-2">Tipos Licencia</label>
+  </span>
+  

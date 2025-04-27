@@ -1,0 +1,14 @@
+<span class="p-float-label">
+    <p-dropdown
+      optionLabel="descripcion"
+      filterBy="descripcion"
+      appendTo="body"
+      [options]="provincias"
+      (onChange)="handleValueChange($event)"
+      [formControl]="provinciaControl"
+      [filter]="true"
+      placeholder="Selecciona una Provincia"
+    />
+    <label for="float-label" class="ml-2">Provincia</label>
+  </span>
+  

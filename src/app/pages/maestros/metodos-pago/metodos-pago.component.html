@@ -1,0 +1,98 @@
+<p-toast></p-toast>
+
+<div class="px-2 md:px-4 lg:px-2 lg:py-2">
+  <div class="flex justify-content-between align-items-center flex-wrap mb-3">
+    <div class="text-4xl font-bold text-500">METODOS DE PAGO</div>
+    <button
+      pButton
+      type="button"
+      class="p-button-secondary ml-3 p-button-outlined w-auto"
+      pRipple
+      (click)="showNuevoMetodoPago()"
+      label="Nuevos Metodos de Pago"
+      icon="pi pi-plus"
+    ></button>
+  </div>
+
+  <div class="px-4 py-6 md:px-6 lg:px-8">
+    <div class="grid">
+      <div class="col-12 lg:col-4 p-3" *ngFor="let metodoPago of metodosPago">
+        <div
+          class="shadow-2 surface-card p-4 border-2 border-transparent cursor-pointer h-12rem"
+          style="border-radius: 10px"
+          [ngClass]="{
+            'border-red-500': metodoPago.estado === ActivosState.INACTIVO
+          }"
+        >
+          <div class="flex align-items-center mb-4">
+            <div class="mr-3">
+              <span
+                class="inline-flex justify-content-center align-items-center"
+                [ngClass]="{
+                  'bg-blue-900': metodoPago.estado === ActivosState.ACTIVO,
+                  'bg-red-500': metodoPago.estado === ActivosState.INACTIVO
+                }"
+                style="border-radius: 4px; width: 45px; height: 45px"
+              >
+                <i [ngClass]="[metodoPago.icono, 'text-2xl', 'text-white']"></i>
+              </span>
+            </div>
+            <div>
+              <span class="text-900 text-xl mb-2 font-medium">{{
+                metodoPago.nombre
+              }}</span>
+              <p class="m-0 text-lg lg:text-xl mt-3 font-medium text-sm">
+                {{ metodoPago.cuentaBanco | nroCuentaBanco }}
+              </p>
+            </div>
+
+            <p-inputSwitch
+              name="payment"
+              class="ml-auto"
+              [(ngModel)]="metodoPago.estado"
+              [ngModel]="metodoPago.estado === ActivosState.ACTIVO"
+              (ngModelChange)="onEstadoChange(metodoPago, $event)"
+            ></p-inputSwitch>
+          </div>
+          <p class="text-600 m-0 line-height-3">
+            {{ metodoPago.descripcion }}
+          </p>
+
+          <div class="flex justify-content-end">
+            <button
+              pButton
+              type="button"
+              class="p-button-rounded p-button-text p-button-secondary"
+              pRipple
+              (click)="editarMetodoPago(metodoPago)"
+              icon="pi pi-ellipsis-v"
+            ></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 lg:col-4 p-3 h-14rem">
+        <button
+          (click)="showNuevoMetodoPago()"
+          class="flex h-full w-full flex-column justify-content-center align-items-center py-5 lg:py-0 border-round border-1 surface-border surface-100 cursor-pointer hover:border-primary transition-duration-150"
+        >
+          <span
+            class="text-600 border-circle border-2 w-2rem h-2rem flex align-items-center justify-content-center"
+          >
+            <i class="pi pi-fw pi-plus"></i>
+          </span>
+          <span class="text-600 mt-3 text-center"
+            >Añadir otro metodo de pago</span
+          >
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-nuevo-metodo-pago
+  [isNuevoMetodoPago]="isNuevoMetodoPago"
+  [metodoPagoId]="metodoPago.id"
+  (onHideEmit)="showNuevoMetodoPago($event)"
+  (refreshMetodoPago)="cargarMetodosPago()"
+></app-nuevo-metodo-pago>
