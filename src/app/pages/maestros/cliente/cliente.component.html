@@ -17,7 +17,7 @@
   <div class="grid formgrid p-fluid mt-4">
     <p-table
       #dt2
-      [value]="(clientes$ | async) ?? []"
+      [value]="clientes"
       dataKey="id"
       [paginator]="true"
       [rows]="20"

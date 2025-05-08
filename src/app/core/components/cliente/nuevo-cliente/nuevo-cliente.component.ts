@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 import { Estandar } from 'src/app/core/class/estandar/Estandar.class';
 import { Direcciones } from 'src/app/core/class/maestros';
 import { Cliente } from 'src/app/core/class/maestros/Cliente.class';
@@ -13,6 +14,9 @@ import { updateValidatorsTipoDocumentoTrabajador } from 'src/app/shared/function
 import { EventResetService } from 'src/app/shared/helpers/orden/event-reset.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ValidatorsService } from 'src/app/shared/validators/validators.service';
+import { AppState } from 'src/app/store/app.reducers';
+import { obtenerCliente } from 'src/app/store/maestros/cliente/actions/cliente.actions';
+import { selectClientes } from 'src/app/store/maestros/cliente/selector/cliente.selector';
 
 @Component({
   selector: 'app-nuevo-cliente',
@@ -24,6 +28,7 @@ export class NuevoClienteComponent implements OnInit {
    * Supscripciones activas para cada evento
    */
   private subscription: Subscription = new Subscription();
+  private subject$: Subject<void> = new Subject<void>();
 
   departamentoSelected: Estandar = new Estandar({ id: 0, descripcion: '' });
   provinciaSelected: Estandar = new Estandar({ id: 0, descripcion: '' });
@@ -58,7 +63,8 @@ export class NuevoClienteComponent implements OnInit {
     private readonly clienteService: ClienteService,
     private readonly customValidatorsService: ValidatorsService,
     private alertService: AlertService,
-    private readonly eventResetService: EventResetService
+    private readonly eventResetService: EventResetService,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit(): void {
@@ -66,7 +72,6 @@ export class NuevoClienteComponent implements OnInit {
       .get('tipoDocumento')
       ?.valueChanges.subscribe((tipoDocumento) => {
         if (tipoDocumento == null) return;
-
         this.isRucSelected =
           tipoDocumento.id === TIPO_DOCUMENTO.RUC ? true : false;
         updateValidatorsTipoDocumentoTrabajador(
@@ -74,19 +79,16 @@ export class NuevoClienteComponent implements OnInit {
           this.clienteForm
         );
       });
-
     this.clienteForm
       .get('departamento')
       ?.valueChanges.subscribe((departamento: Estandar) => {
         this.departamentoSelected = departamento;
       });
-
     this.clienteForm
       .get('provincia')
       ?.valueChanges.subscribe((provincia: Estandar) => {
         this.provinciaSelected = provincia;
       });
-
     this.clienteForm
       .get('distrito')
       ?.valueChanges.subscribe((distrito: Estandar) => {
@@ -126,16 +128,23 @@ export class NuevoClienteComponent implements OnInit {
 
   onShow() {
     if (this.clienteId == 0) return;
-    this.subscription.add(
-      this.clienteService.obtenerClienteService$(this.clienteId).subscribe({
-        next: (res: Cliente) => {
-          this.cliente = res;
-          this.clienteId = res.id;
-          this.clienteForm.patchValue(res);
+
+    this.store
+      .select(selectClientes)
+      .pipe(takeUntil(this.subject$))
+      .subscribe({
+        next: (data) => {
+          const { cliente, loading, error } = data;
+          this.clienteForm.patchValue(cliente);
+
           this.habilitarCampos();
+          if (error) {
+            this.alertService.showError('Ups..', error.error);
+          }
         },
-      })
-    );
+      });
+
+    this.store.dispatch(obtenerCliente({ id: this.clienteId }));
   }
 
   onHide() {

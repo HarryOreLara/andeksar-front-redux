@@ -1,9 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription, take } from 'rxjs';
+import { Subject, Subscription, take, takeUntil } from 'rxjs';
 import { Cliente } from 'src/app/core/class/maestros';
 import { Table } from 'primeng/table';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ClienteService } from 'src/app/services/cliente/cliente.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/store/app.reducers';
+import { selectClientes } from 'src/app/store/maestros/cliente/selector/cliente.selector';
+import { listarClientes } from 'src/app/store/maestros/cliente/actions/cliente.actions';
 
 @Component({
   selector: 'app-cliente',
@@ -12,20 +16,36 @@ import { ClienteService } from 'src/app/services/cliente/cliente.service';
 })
 export class ClienteComponent implements OnInit, OnDestroy {
   private readonly subscription: Subscription = new Subscription();
+  private subject$: Subject<void> = new Subject<void>();
+
   clientes: Cliente[] = [];
   cliente: Cliente = new Cliente();
   isNewCliente: boolean = false;
   isContactSidebarVisible: boolean = false;
   isDirectionSidebarVisible: boolean = false;
 
-  clientes$: Observable<Cliente[]> = this.clienteService.clientes$;
-
   constructor(
     private readonly alertService: AlertService,
-    private readonly clienteService: ClienteService
+    private readonly clienteService: ClienteService,
+    private store: Store<AppState>
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.store
+      .select(selectClientes)
+      .pipe(takeUntil(this.subject$))
+      .subscribe({
+        next: (data) => {
+          const { clientes, loading, error } = data;
+          this.clientes = clientes;
+          if (error) {
+            this.alertService.showError('Ups..', error.error);
+          }
+        },
+      });
+
+    this.store.dispatch(listarClientes());
+  }
 
   clear(table: Table) {
     table.clear();
@@ -67,5 +87,9 @@ export class ClienteComponent implements OnInit, OnDestroy {
     this.isDirectionSidebarVisible = !this.isDirectionSidebarVisible;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+    this.subject$.next();
+    this.subject$.complete();
+  }
 }
